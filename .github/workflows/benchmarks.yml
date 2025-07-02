@@ -55,6 +55,9 @@ jobs:
           VERSIONS="${{ github.event.inputs.versions || 'stable,nightly' }}"
           REPOS="${{ github.event.inputs.repos || 'ithacaxyz/account:v0.3.2,Vectorized/solady:v0.1.22' }}"
 
+          # Ensure foundryup is in PATH for the benchmark binary
+          export PATH="$HOME/.foundry/bin:$PATH"
+          
           # Build the command with force-install for CI
           CMD="./target/release/foundry-bench --output-dir ./benches --force-install"
           CMD="$CMD --versions $VERSIONS"
@@ -101,6 +104,9 @@ jobs:
           VERSIONS="${{ github.event.inputs.versions || 'stable,nightly' }}"
           REPOS="${{ github.event.inputs.repos || 'ithacaxyz/account:v0.3.2,Vectorized/solady:v0.1.22' }}"
 
+          # Ensure foundryup is in PATH for the benchmark binary
+          export PATH="$HOME/.foundry/bin:$PATH"
+          
           # Build the command with force-install for CI
           CMD="./target/release/foundry-bench --output-dir ./benches --force-install"
           CMD="$CMD --versions $VERSIONS"
@@ -147,6 +153,9 @@ jobs:
           VERSIONS="${{ github.event.inputs.versions || 'stable,nightly' }}"
           REPOS="${{ github.event.inputs.repos || 'ithacaxyz/account:v0.3.2,Vectorized/solady:v0.1.22' }}"
 
+          # Ensure foundryup is in PATH for the benchmark binary
+          export PATH="$HOME/.foundry/bin:$PATH"
+          
           # Build the command with force-install for CI
           CMD="./target/release/foundry-bench --output-dir ./benches --force-install"
           CMD="$CMD --versions $VERSIONS"
