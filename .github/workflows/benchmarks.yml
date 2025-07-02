@@ -1,6 +1,8 @@
 name: Foundry Benchmarks
 
 on:
+  pull_request:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
     inputs:
       pr_number:
@@ -50,8 +52,8 @@ jobs:
 
       - name: Run forge_test and forge_fuzz_test benchmarks
         run: |
-          VERSIONS="${{ github.event.inputs.versions }}"
-          REPOS="${{ github.event.inputs.repos }}"
+          VERSIONS="${{ github.event.inputs.versions || 'stable,nightly' }}"
+          REPOS="${{ github.event.inputs.repos || 'ithacaxyz/account:v0.3.2,Vectorized/solady:v0.1.22' }}"
 
           # Build the command with force-install for CI
           CMD="./target/release/foundry-bench --output-dir ./benches --force-install"
@@ -96,8 +98,8 @@ jobs:
 
       - name: Run forge_build benchmarks (with and without cache)
         run: |
-          VERSIONS="${{ github.event.inputs.versions }}"
-          REPOS="${{ github.event.inputs.repos }}"
+          VERSIONS="${{ github.event.inputs.versions || 'stable,nightly' }}"
+          REPOS="${{ github.event.inputs.repos || 'ithacaxyz/account:v0.3.2,Vectorized/solady:v0.1.22' }}"
 
           # Build the command with force-install for CI
           CMD="./target/release/foundry-bench --output-dir ./benches --force-install"
@@ -142,8 +144,8 @@ jobs:
 
       - name: Run forge_coverage benchmark
         run: |
-          VERSIONS="${{ github.event.inputs.versions }}"
-          REPOS="${{ github.event.inputs.repos }}"
+          VERSIONS="${{ github.event.inputs.versions || 'stable,nightly' }}"
+          REPOS="${{ github.event.inputs.repos || 'ithacaxyz/account:v0.3.2,Vectorized/solady:v0.1.22' }}"
 
           # Build the command with force-install for CI
           CMD="./target/release/foundry-bench --output-dir ./benches --force-install"
@@ -214,6 +216,7 @@ jobs:
           rm -rf benches/forge-coverage-results
 
       - name: Commit benchmark results
+        if: github.event_name != 'pull_request'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -243,11 +246,11 @@ jobs:
           fi
 
       - name: Comment on PR
-        if: github.event.inputs.pr_number != ''
+        if: github.event.inputs.pr_number != '' || github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
-            const prNumber = ${{ github.event.inputs.pr_number }};
+            const prNumber = ${{ github.event.inputs.pr_number || github.event.pull_request.number }};
             const benchmarkResults = `${{ steps.benchmark_results.outputs.results }}`;
 
             const comment = `## 📊 Foundry Benchmark Results
