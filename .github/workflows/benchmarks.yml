@@ -46,6 +46,12 @@ jobs:
         run: |
           curl -L https://foundry.paradigm.xyz | bash
           echo "$HOME/.foundry/bin" >> $GITHUB_PATH
+          
+          # Create a symlink to make foundryup available system-wide
+          sudo ln -sf $HOME/.foundry/bin/foundryup /usr/local/bin/foundryup
+          
+          # Verify installation
+          foundryup --version
 
       - name: Build benchmark binary
         run: cargo build --release --bin foundry-bench
@@ -55,8 +61,6 @@ jobs:
           VERSIONS="${{ github.event.inputs.versions || 'stable,nightly' }}"
           REPOS="${{ github.event.inputs.repos || 'ithacaxyz/account:v0.3.2,Vectorized/solady:v0.1.22' }}"
 
-          # Ensure foundryup is in PATH for the benchmark binary
-          export PATH="$HOME/.foundry/bin:$PATH"
           
           # Build the command with force-install for CI
           CMD="./target/release/foundry-bench --output-dir ./benches --force-install"
@@ -95,6 +99,12 @@ jobs:
         run: |
           curl -L https://foundry.paradigm.xyz | bash
           echo "$HOME/.foundry/bin" >> $GITHUB_PATH
+          
+          # Create a symlink to make foundryup available system-wide
+          sudo ln -sf $HOME/.foundry/bin/foundryup /usr/local/bin/foundryup
+          
+          # Verify installation
+          foundryup --version
 
       - name: Build benchmark binary
         run: cargo build --release --bin foundry-bench
@@ -104,8 +114,6 @@ jobs:
           VERSIONS="${{ github.event.inputs.versions || 'stable,nightly' }}"
           REPOS="${{ github.event.inputs.repos || 'ithacaxyz/account:v0.3.2,Vectorized/solady:v0.1.22' }}"
 
-          # Ensure foundryup is in PATH for the benchmark binary
-          export PATH="$HOME/.foundry/bin:$PATH"
           
           # Build the command with force-install for CI
           CMD="./target/release/foundry-bench --output-dir ./benches --force-install"
@@ -144,6 +152,12 @@ jobs:
         run: |
           curl -L https://foundry.paradigm.xyz | bash
           echo "$HOME/.foundry/bin" >> $GITHUB_PATH
+          
+          # Create a symlink to make foundryup available system-wide
+          sudo ln -sf $HOME/.foundry/bin/foundryup /usr/local/bin/foundryup
+          
+          # Verify installation
+          foundryup --version
 
       - name: Build benchmark binary
         run: cargo build --release --bin foundry-bench
@@ -153,8 +167,6 @@ jobs:
           VERSIONS="${{ github.event.inputs.versions || 'stable,nightly' }}"
           REPOS="${{ github.event.inputs.repos || 'ithacaxyz/account:v0.3.2,Vectorized/solady:v0.1.22' }}"
 
-          # Ensure foundryup is in PATH for the benchmark binary
-          export PATH="$HOME/.foundry/bin:$PATH"
           
           # Build the command with force-install for CI
           CMD="./target/release/foundry-bench --output-dir ./benches --force-install"
